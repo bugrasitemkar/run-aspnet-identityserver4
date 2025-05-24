@@ -1,45 +1,101 @@
-# Securing Microservices with IdentityServer4, OAuth2 and OpenID Connect fronted by Ocelot API Gateway
+# Securing Microservices with IdentityServer4, OAuth2 and OpenID Connect (via Ocelot API Gateway)
 
-### Overall Picture
-See the overall picture of **implementations on secure microservices with using standalone Identity Server 4 and backing with Ocelot API Gateway** on real-world **e-commerce microservices** project;
+This repository demonstrates how to secure microservices in a real-world e-commerce scenario using IdentityServer4, OAuth2, OpenID Connect, and the Ocelot API Gateway.
 
-![Securing Microservices with IS4](https://user-images.githubusercontent.com/1147445/97865031-9a4c9f00-1d1a-11eb-8dee-80fc600decfa.png)
+## 🔒 Overview
 
-In this repository, you will see that how to secure microservices with using **standalone Identity Server 4** and backing with **Ocelot API Gateway**. We’re going to protect our ASP.NET Web MVC and API applications with using **OAuth 2 and OpenID Connect** in IdentityServer4. Securing your web application and API with tokens, working with claims, authentication and authorization middlewares and applying policies, and so on.
+We implement secure communication between multiple services:
 
-![Overall Picture of Repository](https://user-images.githubusercontent.com/1147445/97865027-991b7200-1d1a-11eb-927e-3f5580a7f5b5.png)
+- `Movies.API` (protected API resource)
+- `Movies.MVC` (interactive client app)
+- `IdentityServer` (standalone identity provider)
+- `Ocelot API Gateway` (reverse proxy handling authorization)
 
-### Movies.API
-First of all, we are going to develop **Movies.API** project and protect this API resources with **IdentityServer4 OAuth 2.0 implementation**. Generate **JWT Token** with client_credentials from IdentityServer4 and will use this token for securing Movies.API protected resources.
+![System Overview](https://user-images.githubusercontent.com/1147445/97865031-9a4c9f00-1d1a-11eb-8dee-80fc600decfa.png)
+![Repository Structure](https://user-images.githubusercontent.com/1147445/97865027-991b7200-1d1a-11eb-927e-3f5580a7f5b5.png)
 
-### Movies.MVC
-After that, we are going to develop Movies.MVC Asp.Net project for Interactive Client of our application. This Interactive Movies.MVC Client application will be secured with OpenID Connect in IdentityServer4. Our client application pass credentials with logging to an Identity Server and receive back a JSON Web Token (JWT).
+---
 
-### Identity Server
-Also, we are going to develop centralized standalone **Authentication Server** and **Identity Provider** with implementing IdentityServer4 package and the name of microservice is Identity Server.
-Identity Server4 is an open source framework which implements **OpenId Connect and OAuth2 protocols** for .Net Core.
-With Identity Server, we can provide authentication and access control for our web applications or Web APIs from a single point between applications or on a user basis.
+## 🎬 Movies.API
 
-### Ocelot API Gateway
-Lastly, we are going to develop **Ocelot API Gateway** and make secure protected API resources over the Ocelot API Gateway with transferring **JWT web tokens**.
-Once the client has a bearer token it will call the API endpoint which is fronted by Ocelot. Ocelot is working as a reverse proxy.
-After Ocelot reroutes the request to the internal API, it will present the token to Identity Server in the **authorization pipeline**. If the client is authorized the request will be processed and a list of movies will be sent back to the client.
+- ASP.NET Core Web API secured using **IdentityServer4** with **OAuth2 (client_credentials)**.
+- Protected endpoints accept JWTs issued by IdentityServer4.
+- Validates the access token to serve movie data.
 
-Also over these picture, we have also apply the **claim based authentications**.
+---
 
-## Installation
-Follow these steps to get your development environment set up:
-1. Check All projects run profiles. One by one Right Click the project file, open Properties window and check the debug section. Launch Profile should be the "Project" and App URLs should be the same as big picture.
-2. For all projects, one by one, Set a Startup project and see the Run profile on the Run button. Change the default running profile to IIS Express to Project name.
-3. Multiple startup projects. Right click the solution, open Properties, and set Multiple startup project and Start all 4 application click apply and ok.
-4. Now you can run the overall application with Click Start button or F5.
-You will see 4 project console window and 1 chrome window for client application.
+## 🎥 Movies.MVC
 
-* **Movies.Client -> https://localhost:5002/**
+- ASP.NET Core MVC web application as an **interactive OpenID Connect client**.
+- Authenticates users via IdentityServer4.
+- Uses Authorization Code flow to obtain **JWT tokens** and access protected resources.
 
-Check the application with logging the system with below credentials;
+---
 
-* **username - password 1 : alice - a1**
-* **username - password 2 : bob - b1**
+## 🆔 Identity Server
 
+- Implements a centralized **Identity Provider** using **IdentityServer4**.
+- Supports OAuth2 and OpenID Connect protocols.
+- Issues tokens for authenticated users and services.
+- Acts as the single sign-on entry point for all applications.
 
+---
+
+## 🚪 Ocelot API Gateway
+
+- Routes client requests to backend services securely.
+- Accepts **Bearer tokens (JWT)** from clients.
+- Forwards the token to protected services (e.g., Movies.API).
+- Performs authentication via IdentityServer4 in the authorization pipeline.
+
+Includes **claim-based authorization** for access control.
+
+---
+
+## 🚀 Installation & Running
+
+Follow these steps to set up the development environment:
+
+1. **Check run profiles:** Right-click each project, go to **Properties > Debug**, ensure the **Launch profile is set to 'Project'** and matches the port in the overview diagram.
+2. **Set default launch:** Change the default run profile from **IIS Express** to **Project** for each project.
+3. **Enable multiple startups:** Right-click the solution → **Properties** → **Multiple startup projects** → Set all 4 apps to **Start**.
+4. Click **Start** (or press F5) to run the solution.
+
+This will open 4 console windows (for the microservices) and 1 browser window for the client.
+
+- Client App: `https://localhost:5002/`
+
+### 🔑 Login Credentials
+
+You can use the following test accounts to log in:
+
+- **alice / a1**
+- **bob / b1**
+
+---
+
+## 📁 Repository Structure
+
+```
+/Movies.API            # Secured API using IdentityServer4
+/Movies.MVC            # OpenID Connect interactive client
+/IdentityServer        # Centralized authentication and identity service
+/OcelotGateway         # API Gateway using Ocelot
+```
+
+---
+
+## 🧰 Technologies Used
+
+- ASP.NET Core
+- IdentityServer4
+- OAuth2 / OpenID Connect
+- Ocelot API Gateway
+- JWT (JSON Web Tokens)
+- Claim-based Authorization
+
+---
+
+## 📄 License
+
+This project is for educational purposes only.
